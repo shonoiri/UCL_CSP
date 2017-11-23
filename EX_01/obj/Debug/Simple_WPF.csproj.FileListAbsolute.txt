@@ -14,3 +14,6 @@ C:\Users\User\unicorn\csp\CSP_DU\EX_01\obj\Debug\Simple_WPF.csproj.CoreCompileIn
 C:\Users\User\unicorn\csp\CSP_DU\EX_01\obj\Debug\EX_01.exe
 C:\Users\User\unicorn\csp\CSP_DU\EX_01\obj\Debug\EX_01.pdb
 C:\Users\User\unicorn\csp\CSP_DU\EX_01\obj\Debug\EditRoomWindow.g.cs
+C:\Users\User\unicorn\csp\CSP_DU\EX_01\obj\Debug\EditCenterWindow.g.cs
+C:\Users\User\unicorn\csp\CSP_DU\EX_01\obj\Debug\EditCenterWindow.baml
+C:\Users\User\unicorn\csp\CSP_DU\EX_01\obj\Debug\EditRoomWindow.baml

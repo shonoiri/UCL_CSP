@@ -1,21 +1,7 @@
-﻿using Microsoft.Win32;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Collections.ObjectModel;
-using System.Globalization;
-using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using Microsoft.VisualBasic.FileIO;
 
 namespace EX_01
@@ -35,7 +21,8 @@ namespace EX_01
             DataGridCenters.DataContext = centres;
         }
 
-        private void DataGridCenters_CurrentCellChanged(object sender, EventArgs e) {
+        private void DataGridCenters_CurrentCellChanged(object sender, EventArgs e)
+        {
             if (DataGridCenters.CurrentItem != null)
             {
                 MeetingCenter center = DataGridCenters.CurrentItem as MeetingCenter;
@@ -55,33 +42,51 @@ namespace EX_01
 
         private void BtnCreateRoom_Click(object sender, RoutedEventArgs e)
         {
-            
-            MeetingRoom room = new MeetingRoom();
-            room.Name = TBoxRoomName.Text;
-            room.Code = TBoxRoomCode.Text;
-            room.Description = TBoxRoomDescription.Text;
-            room.Capacity = Int32.Parse(TBoxRoomCapacity.Text);
-            room.VideoConference = CBoxVideo.IsChecked.Value;
-            room.MeetingCenterCode = (CurrentCentre.DataContext as MeetingCenter).Code;
-            (CurrentCentre.DataContext as MeetingCenter).Rooms.Add(room);
-            DataGridRooms.Items.Refresh();
+            if (CurrentCentre.DataContext != null)
+            {
+                MeetingRoom room = new MeetingRoom();
+                room.MeetingCenterCode = (CurrentCentre.DataContext as MeetingCenter).Code;
+
+                EditRoomWindow editWindow = new EditRoomWindow(room);
+                editWindow.ShowDialog();
+                if (editWindow.DialogResult == true)
+                {
+                    room.Name = editWindow.TBoxRoomName.Text;
+                    room.Code = editWindow.TBoxRoomCode.Text;
+                    room.Code = editWindow.TBoxRoomDescription.Text;
+                    room.Capacity = Int32.Parse(editWindow.TBoxRoomCapacity.Text);
+                    room.VideoConference = editWindow.CBoxVideo.IsChecked.Value;
+                    (CurrentCentre.DataContext as MeetingCenter).Rooms.Add(room);
+                }
+                DataGridRooms.Items.Refresh();
+            }
+            else
+            {
+                MessageBox.Show("Please select Meeting Centre", "Meeting Centre Not Selected", MessageBoxButton.OK);
+            }
         }
 
         private void BtnCreateCenter_Click(object sender, RoutedEventArgs e)
         {
-            MeetingCenter center = new MeetingCenter();
-            center.Name = TBoxCenterName.Text;
-            center.Code = TBoxCenterCode.Text;
-            center.Code = TBoxCenterDescription.Text;
-            centres.Add(center);
-            DataGridCenters.Items.Refresh();
+            EditCenterWindow editWindow = new EditCenterWindow(null);
+            editWindow.ShowDialog();
+            if (editWindow.DialogResult == true)
+            {
+                MeetingCenter center = new MeetingCenter();
+                center.Name = editWindow.TBoxCenterName.Text;
+                center.Code = editWindow.TBoxCenterCode.Text;
+                center.Code = editWindow.TBoxCenterDescription.Text;
+                centres.Add(center);
+                DataGridCenters.Items.Refresh();
+            }
+
         }
 
         private void BtnDeleteCenter_Click(object sender, RoutedEventArgs e)
         {
             if (DataGridCenters.SelectedItem != null)
             {
-                MeetingCenter center = DataGridCenters.SelectedItem as MeetingCenter;                
+                MeetingCenter center = DataGridCenters.SelectedItem as MeetingCenter;
                 centres.Remove(center);
                 DataGridRooms.DataContext = null;
                 CurrentCentre.DataContext = null;
@@ -92,7 +97,26 @@ namespace EX_01
 
         private void BtnEditCenter_Click(object sender, RoutedEventArgs e)
         {
+            if (CurrentCentre.DataContext != null)
+            {
+                MeetingCenter center = CurrentCentre.DataContext as MeetingCenter;
+                EditCenterWindow editWindow = new EditCenterWindow(center);
+                editWindow.ShowDialog();
+                if (editWindow.DialogResult == true)
+                {
+                    center.Name = editWindow.TBoxCenterName.Text;
+                    center.Code = editWindow.TBoxCenterCode.Text;
+                    center.Description = editWindow.TBoxCenterDescription.Text;
+                    DataGridRooms.Items.Refresh();
+                    DataGridCenters.Items.Refresh();
+                    CurrentCentre.DataContext = center;
+                }
 
+            }
+            else
+            {
+                MessageBox.Show("Please select Meeting Centre", "Meeting Centre Not Selected", MessageBoxButton.OK);
+            }
         }
 
         private void BtnDeleteRoom_Click(object sender, RoutedEventArgs e)
@@ -103,15 +127,38 @@ namespace EX_01
                 GetMeetingCenterByName(room.MeetingCenterCode).Rooms.Remove(room);
                 CurrentRoom.DataContext = null;
             }
-                DataGridRooms.Items.Refresh();
+            DataGridRooms.Items.Refresh();
         }
 
         private void BtnEditRoom_Click(object sender, RoutedEventArgs e)
         {
-
+            if (CurrentRoom.DataContext != null)
+            {
+                MeetingRoom room = CurrentRoom.DataContext as MeetingRoom;
+                EditRoomWindow editWindow = new EditRoomWindow(room);
+                editWindow.ShowDialog();
+                if (editWindow.DialogResult == true)
+                {
+                    room.Name = editWindow.TBoxRoomName.Text;
+                    room.Code = editWindow.TBoxRoomCode.Text;
+                    room.Description = editWindow.TBoxRoomDescription.Text;
+                    room.Capacity = Int32.Parse(editWindow.TBoxRoomCapacity.Text);
+                    room.VideoConference = editWindow.CBoxVideo.IsChecked.Value;
+                    DataGridRooms.Items.Refresh();
+                    CurrentRoom.DataContext = room;
+                }
+            }
+            else
+            {
+                if (CurrentCentre.DataContext == null)
+                    MessageBox.Show("Please select Meeting Centre", "Meeting Centre Not Selected", MessageBoxButton.OK);
+                else
+                    MessageBox.Show("Please select Meeting Room", "Meeting Room Not Selected", MessageBoxButton.OK);
+            }
         }
 
-        private MeetingCenter GetMeetingCenterByName(string Name) {
+        private MeetingCenter GetMeetingCenterByName(string Name)
+        {
             return centres.Where(x => x.Code.Equals(Name)).First();
         }
 
@@ -126,7 +173,7 @@ namespace EX_01
             {
                 parser.TextFieldType = FieldType.Delimited;
                 parser.SetDelimiters(",");
-                string[] fields = parser.ReadFields(); 
+                string[] fields = parser.ReadFields();
 
                 //MEETING_CENTRES
                 fields = parser.ReadFields();
@@ -154,8 +201,8 @@ namespace EX_01
                     GetMeetingCenterByName(fields[5]).Rooms.Add(room);
                 }
 
-            parser.Close();
-            }            
+                parser.Close();
+            }
         }
 
     }

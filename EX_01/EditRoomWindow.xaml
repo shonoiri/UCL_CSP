@@ -1,0 +1,30 @@
+﻿<Window x:Class="EX_01.EditRoomWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:EX_01"
+        mc:Ignorable="d"
+        Title="Meeting Room Edit/New" Height="500" Width="500">
+    <Grid>
+        <StackPanel Name="CurrentRoom"  Orientation="Vertical" HorizontalAlignment="Left" Margin="20 20 20 20">
+            <TextBlock FontSize="20" HorizontalAlignment="Center" Margin="0 0 0 10" >Meeting Room</TextBlock>
+            <TextBlock>Name</TextBlock>
+            <TextBox Name="TBoxRoomName" Text="{Binding Name, Mode=OneWay}" Width="350" HorizontalAlignment="Left" >
+            </TextBox>
+            <TextBlock>Code</TextBlock>
+            <TextBox Name="TBoxRoomCode" Text="{Binding Code, Mode=OneWay}" Width="350" HorizontalAlignment="Left"></TextBox>
+            <TextBlock>Meeting Center Code</TextBlock>
+            <TextBox Name="TBoxRoomCentreCode" Text="{Binding MeetingCenterCode, Mode=OneWay}" Width="350" HorizontalAlignment="Left" IsReadOnly="True"></TextBox>
+            <TextBlock>Capacity</TextBlock>
+            <TextBox Name="TBoxRoomCapacity" Text="{Binding Capacity, Mode=OneWay}" Width="350" HorizontalAlignment="Left"></TextBox>
+            <TextBlock>Description</TextBlock>
+            <TextBox Name="TBoxRoomDescription" Text="{Binding Description, Mode=OneWay}" Width="350" Height="50" HorizontalAlignment="Left"  TextWrapping="Wrap" AcceptsReturn="True"></TextBox>
+            <CheckBox Name="CBoxVideo" IsChecked="{Binding VideoConference, Mode=OneWay}"  HorizontalAlignment="Left">Video Conference</CheckBox>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0 0 20 20">
+            <Button Name="BtnSave" Width="80" HorizontalAlignment="Right" Margin="0 20 10 0" Click="BtnSave_Click">Save</Button>
+            <Button Name="BtnCancel" Width="80" Margin="0 20 0 0" Click="BtnCancel_Click">Cancel</Button>
+        </StackPanel>
+    </Grid>
+</Window>

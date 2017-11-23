@@ -10,11 +10,11 @@ none
 false
 DEBUG;TRACE
 C:\Users\User\unicorn\csp\CSP_DU\EX_01\App.xaml
-3-1519867937
+3-603405486
 
-15-1870432093
-16132677950
-CenterEditPage.xaml;MainWindow.xaml;RoomEditPage.xaml;
+13-1197097202
+171782264174
+EditCenterWindow.xaml;EditRoomWindow.xaml;MainWindow.xaml;
 
-False
+True
 
