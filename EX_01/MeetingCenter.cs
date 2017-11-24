@@ -5,7 +5,7 @@ using System.ComponentModel;
 
 namespace EX_01
 {
-    public class MeetingCenter : IEditableObject, IDataErrorInfo
+    public class MeetingCenter : IEditableObject
     {
         struct CenterData
         {
@@ -46,34 +46,6 @@ namespace EX_01
         public void CancelEdit()
         {
             this.centerData = backupData;
-        }
-
-        public string Error
-        {
-            get
-            {
-                return null;
-            }
-        }
-
-        public string this[string columnName]
-        {
-            get
-            {
-                string msg = null;
-                switch (columnName)
-                {
-                    case "Name":
-                        if (string.IsNullOrEmpty(this.Name))
-                            msg = "Name can't be empty.";
-                        break;
-
-                    default:
-                        throw new ArgumentException(
-                        "Unrecognized property: " + columnName);
-                }
-                return msg;
-            }
         }
 
         public String Name

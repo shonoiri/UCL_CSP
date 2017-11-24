@@ -6,21 +6,90 @@
         xmlns:local="clr-namespace:EX_01"
         mc:Ignorable="d"
         Title="Meeting Room Edit/New" Height="500" Width="500">
+    <Window.Resources>
+        <ControlTemplate x:Key="TextBoxErrorTemplate" TargetType="Control">
+            <DockPanel>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" DockPanel.Dock="Bottom">
+                    <Grid Width="12" Height="12">
+                        <Ellipse Width="12" Height="12" 
+                                 Fill="Red" 
+                                 HorizontalAlignment="Right"
+                                 VerticalAlignment="Center">
+                        </Ellipse>
+                        <TextBlock Foreground="White" 
+                                   FontWeight="Heavy" 
+                                   FontSize="8" 
+                                   HorizontalAlignment="Right" 
+                                   VerticalAlignment="Center" 
+                                   TextAlignment="Center"
+                                   ToolTip="{Binding ElementName=ErrorAdorner, 
+                                   Path=AdornedElement.(Validation.Errors)[0].ErrorContent}"
+                        >X</TextBlock>
+                    </Grid>
+                    <TextBlock Foreground="Red" 
+                               FontWeight="Heavy" 
+                               Margin="0,0,0,2" 
+                               Text="{Binding ElementName=ErrorAdorner, 
+                                              Path=AdornedElement.(Validation.Errors)[0].ErrorContent}">
+                    </TextBlock>
+                </StackPanel>
+                <AdornedElementPlaceholder x:Name="ErrorAdorner" ></AdornedElementPlaceholder>
+            </DockPanel>
+        </ControlTemplate>
+    </Window.Resources>
     <Grid>
         <StackPanel Name="CurrentRoom"  Orientation="Vertical" HorizontalAlignment="Left" Margin="20 20 20 20">
             <TextBlock FontSize="20" HorizontalAlignment="Center" Margin="0 0 0 10" >Meeting Room</TextBlock>
             <TextBlock>Name</TextBlock>
-            <TextBox Name="TBoxRoomName" Text="{Binding Name, Mode=OneWay}" Width="350" HorizontalAlignment="Left" TextChanged="TBoxRoomName_TextChanged" >
+            <TextBox x:Name="TBoxRoomName" Width="350" HorizontalAlignment="Left" Validation.ErrorTemplate="{StaticResource TextBoxErrorTemplate}">
+                <TextBox.Text>
+                    <Binding Path="Name" UpdateSourceTrigger="PropertyChanged">
+                        <Binding.ValidationRules>
+                            <local:DataValidator DataType="Name"/>
+                        </Binding.ValidationRules>
+                    </Binding>
+                </TextBox.Text>
             </TextBox>
             <TextBlock>Code</TextBlock>
-            <TextBox Name="TBoxRoomCode" Text="{Binding Code, Mode=OneWay}" Width="350" HorizontalAlignment="Left" TextChanged="TBoxRoomCode_TextChanged"></TextBox>
+            <TextBox Name="TBoxRoomCode" Width="350" HorizontalAlignment="Left" Validation.ErrorTemplate="{StaticResource TextBoxErrorTemplate}">
+                <TextBox.Text>
+                    <Binding Path="Code" UpdateSourceTrigger="PropertyChanged">
+                        <Binding.ValidationRules>
+                            <local:DataValidator DataType="Code"/>
+                        </Binding.ValidationRules>
+                    </Binding>
+                </TextBox.Text>
+            </TextBox>
             <TextBlock>Meeting Center Code</TextBlock>
-            <TextBox Name="TBoxRoomCentreCode" Text="{Binding MeetingCenterCode, Mode=OneWay}" Width="350" HorizontalAlignment="Left" IsReadOnly="True" TextChanged="TBoxRoomCentreCode_TextChanged"></TextBox>
+            <TextBox Name="TBoxRoomCentreCode" Width="350" HorizontalAlignment="Left" IsReadOnly="True">
+                <TextBox.Text>
+                    <Binding Path="MeetingCentreCode"></Binding>
+                </TextBox.Text>
+            </TextBox>
             <TextBlock>Capacity</TextBlock>
-            <TextBox Name="TBoxRoomCapacity" Text="{Binding Capacity, Mode=OneWay}" Width="350" HorizontalAlignment="Left" TextChanged="TBoxRoomCapacity_TextChanged"></TextBox>
+            <TextBox Name="TBoxRoomCapacity" Width="350" HorizontalAlignment="Left" Validation.ErrorTemplate="{StaticResource TextBoxErrorTemplate}">
+                <TextBox.Text>
+                    <Binding Path="Capacity" UpdateSourceTrigger="PropertyChanged">
+                        <Binding.ValidationRules>
+                            <local:DataValidator DataType="Capacity"/>
+                        </Binding.ValidationRules>
+                    </Binding>
+                </TextBox.Text>
+            </TextBox>
             <TextBlock>Description</TextBlock>
-            <TextBox Name="TBoxRoomDescription" Text="{Binding Description, Mode=OneWay}" Width="350" Height="50" HorizontalAlignment="Left"  TextWrapping="Wrap" AcceptsReturn="True" TextChanged="TBoxRoomDescription_TextChanged"></TextBox>
-            <CheckBox Name="CBoxVideo" IsChecked="{Binding VideoConference, Mode=OneWay}"  HorizontalAlignment="Left" Checked="CBoxVideo_Checked">Video Conference</CheckBox>
+            <TextBox Name="TBoxRoomDescription" Width="350" Height="50" HorizontalAlignment="Left"  
+                     TextWrapping="Wrap" 
+                     AcceptsReturn="True" 
+                     Validation.ErrorTemplate="{StaticResource TextBoxErrorTemplate}">
+                <TextBox.Text>
+                    <Binding Path="Description" UpdateSourceTrigger="PropertyChanged">
+                        <Binding.ValidationRules>
+                            <local:DataValidator DataType="Description"/>
+                        </Binding.ValidationRules>
+                    </Binding>
+                </TextBox.Text>
+            </TextBox>
+            <CheckBox Name="CBoxVideo" IsChecked="{Binding VideoConference}"  HorizontalAlignment="Left">Video Conference</CheckBox>
         </StackPanel>
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0 0 20 20">
             <Button Name="BtnSave" Width="80" HorizontalAlignment="Right" Margin="0 20 10 0" Click="BtnSave_Click">Save</Button>

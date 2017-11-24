@@ -46,18 +46,8 @@ namespace EX_01
             {
                 MeetingRoom room = new MeetingRoom();
                 room.MeetingCenterCode = (CurrentCentre.DataContext as MeetingCenter).Code;
-
                 EditRoomWindow editWindow = new EditRoomWindow(room);
                 editWindow.ShowDialog();
-                if (editWindow.DialogResult == true)
-                {
-                    room.Name = editWindow.TBoxRoomName.Text;
-                    room.Code = editWindow.TBoxRoomCode.Text;
-                    room.Code = editWindow.TBoxRoomDescription.Text;
-                    room.Capacity = Int32.Parse(editWindow.TBoxRoomCapacity.Text);
-                    room.VideoConference = editWindow.CBoxVideo.IsChecked.Value;
-                    (CurrentCentre.DataContext as MeetingCenter).Rooms.Add(room);
-                }
                 DataGridRooms.Items.Refresh();
             }
             else
@@ -99,11 +89,10 @@ namespace EX_01
             {
                 MeetingCenter center = CurrentCentre.DataContext as MeetingCenter;
                 EditCenterWindow editWindow = new EditCenterWindow(center);
-                editWindow.Show();
-                CurrentCentre.DataContext = center;
-                DataGridRooms.Items.Refresh();
-                DataGridCenters.Items.Refresh();
+                editWindow.ShowDialog();
                 CurrentCentre.DataContext = null;
+                DataGridCenters.Items.Refresh();
+                DataGridRooms.Items.Refresh();
             }
             else
             {
@@ -129,16 +118,8 @@ namespace EX_01
                 MeetingRoom room = CurrentRoom.DataContext as MeetingRoom;
                 EditRoomWindow editWindow = new EditRoomWindow(room);
                 editWindow.ShowDialog();
-                if (editWindow.DialogResult == true)
-                {
-                    room.Name = editWindow.TBoxRoomName.Text;
-                    room.Code = editWindow.TBoxRoomCode.Text;
-                    room.Description = editWindow.TBoxRoomDescription.Text;
-                    room.Capacity = Int32.Parse(editWindow.TBoxRoomCapacity.Text);
-                    room.VideoConference = editWindow.CBoxVideo.IsChecked.Value;
-                    DataGridRooms.Items.Refresh();
-                    CurrentRoom.DataContext = room;
-                }
+                CurrentRoom.DataContext = null;
+                DataGridRooms.Items.Refresh();
             }
             else
             {

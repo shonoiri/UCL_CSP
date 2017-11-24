@@ -89,7 +89,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MeetingRoom.cs" />
-    <Compile Include="NameValidator.cs" />
+    <Compile Include="DataValidator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
