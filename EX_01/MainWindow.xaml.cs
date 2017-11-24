@@ -3,6 +3,8 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 using Microsoft.VisualBasic.FileIO;
+using Microsoft.Win32;
+using System.IO;
 
 namespace EX_01
 {
@@ -12,13 +14,11 @@ namespace EX_01
     public partial class MainWindow : Window
     {
         private static ObservableCollection<MeetingCenter> centres = new ObservableCollection<MeetingCenter>();
-        private const string InputFileName = "ImportData.csv";
+        private string FileName = "";
 
         public MainWindow()
         {
             InitializeComponent();
-            LoadEmployeeData();
-            DataGridCenters.DataContext = centres;
         }
 
         private void DataGridCenters_CurrentCellChanged(object sender, EventArgs e)
@@ -58,8 +58,8 @@ namespace EX_01
 
         private void BtnCreateCenter_Click(object sender, RoutedEventArgs e)
         {
-            MeetingCenter center = new MeetingCenter();
-            EditCenterWindow editWindow = new EditCenterWindow(center);
+            var center = new MeetingCenter();
+            var editWindow = new EditCenterWindow(center);
             editWindow.ShowDialog();
             if (editWindow.DialogResult == true)
             {
@@ -87,12 +87,12 @@ namespace EX_01
         {
             if (CurrentCentre.DataContext != null)
             {
-                MeetingCenter center = CurrentCentre.DataContext as MeetingCenter;
-                EditCenterWindow editWindow = new EditCenterWindow(center);
+                var center = CurrentCentre.DataContext as MeetingCenter;
+                var editWindow = new EditCenterWindow(center);
                 editWindow.ShowDialog();
+                DataGridRooms.Items.Refresh();
                 CurrentCentre.DataContext = null;
                 DataGridCenters.Items.Refresh();
-                DataGridRooms.Items.Refresh();
             }
             else
             {
@@ -105,7 +105,7 @@ namespace EX_01
             if (DataGridRooms.SelectedItem != null)
             {
                 MeetingRoom room = DataGridRooms.SelectedItem as MeetingRoom;
-                GetMeetingCenterByName(room.MeetingCenterCode).Rooms.Remove(room);
+                GetMeetingCenterByCode(room.MeetingCenterCode).Rooms.Remove(room);
                 CurrentRoom.DataContext = null;
             }
             DataGridRooms.Items.Refresh();
@@ -130,9 +130,25 @@ namespace EX_01
             }
         }
 
-        private static MeetingCenter GetMeetingCenterByName(string Name)
+        public static MeetingCenter GetMeetingCenterByCode(string Name)
         {
-            return centres.Where(x => x.Code.Equals(Name)).First();
+            foreach (MeetingCenter center in centres)
+            {
+                if (center.Code.Equals(Name))
+                    return center;
+            }
+            return null;
+        }
+
+        public static MeetingRoom GetMeetingRoomByCode(string Code)
+        {
+            foreach (MeetingCenter center in centres)
+            {
+                foreach (MeetingRoom room in center.Rooms)
+                    if (room.Code.Equals(Code))
+                        return room;
+            }
+            return null;
         }
 
         private void Window_Closed(object sender, EventArgs e)
@@ -140,10 +156,11 @@ namespace EX_01
             //save data - save data warning ?
         }
 
-        private void LoadEmployeeData()
+        private void LoadData(string InputFileName)
         {
             using (TextFieldParser parser = new TextFieldParser(InputFileName))
             {
+                centres = new ObservableCollection<MeetingCenter>();
                 parser.TextFieldType = FieldType.Delimited;
                 parser.SetDelimiters(",");
                 string[] fields = parser.ReadFields();
@@ -171,11 +188,57 @@ namespace EX_01
                     room.Capacity = Int32.Parse(fields[3]);
                     room.VideoConference = fields[4].Equals("yes", StringComparison.InvariantCultureIgnoreCase);
                     room.MeetingCenterCode = fields[5];
-                    GetMeetingCenterByName(fields[5]).Rooms.Add(room);
+                    GetMeetingCenterByCode(fields[5]).Rooms.Add(room);
                 }
 
                 parser.Close();
+                DataGridCenters.DataContext = centres;
             }
+        }
+
+        private void SaveData(string fileName)
+        {
+            using (StreamWriter outputFile = new StreamWriter(fileName, false))
+            {
+                outputFile.WriteLine("MEETING_CENTRES\n");
+                foreach (MeetingCenter center in centres)
+                    outputFile.WriteLine(center.ToString());
+                outputFile.WriteLine("MEETING_ROOMS\n");
+                foreach (MeetingCenter center in centres)
+                    foreach (MeetingRoom room in center.Rooms)
+                        outputFile.WriteLine(room.ToString());
+                outputFile.Close();
+            }
+        }
+
+        private void BtnUploadFile_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "Text documents (.csv)|*.csv";
+            if (openFileDialog.ShowDialog() == true)
+                LoadData(openFileDialog.FileName);
+            this.FileName = openFileDialog.FileName;
+        }
+
+        private void BtnSaveFile_Click(object sender, RoutedEventArgs e)
+        {
+            SaveData(this.FileName);
+        }
+
+        private void BtnExportFile_Click(object sender, RoutedEventArgs e)
+        {
+            SaveFileDialog dlg = new SaveFileDialog();
+            dlg.FileName = "ManagerData";
+            dlg.DefaultExt = ".csv";
+            dlg.Filter = "CSV documents (.csv)|*.csv";
+
+            Nullable<bool> result = dlg.ShowDialog();
+
+            if (result == true)
+            {
+                SaveData(dlg.FileName);
+            }
+
         }
     }
 }

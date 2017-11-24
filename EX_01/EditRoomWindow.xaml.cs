@@ -37,6 +37,7 @@ namespace EX_01
         {
             (CurrentRoom.DataContext as MeetingRoom).EndEdit();
             this.Close();
+
         }
 
     }

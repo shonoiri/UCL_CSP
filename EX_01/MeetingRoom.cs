@@ -49,57 +49,86 @@ namespace EX_01
             this.roomData = backupData;
         }
 
-        public string Name {
-            get {
+        //Name, Code, Description, Capacity, VideoConference
+        public override string ToString()
+        {
+            string video = "";
+            if (this.roomData.videoConference)
+                video = "YES";
+            else
+                video = "NO";
+            return this.roomData.name + ", " + this.roomData.code + ", " + this.roomData.description 
+                + ", " + this.roomData.capacity + ", " + video + ", " + this.roomData.meetingCenterCode + "\n";
+        }
+
+        public string Name
+        {
+            get
+            {
                 return this.roomData.name;
             }
-            set {
+            set
+            {
                 this.roomData.name = value;
             }
         }
 
-        public string Code {
-            get {
+        public string Code
+        {
+            get
+            {
                 return this.roomData.code;
             }
-            set {
+            set
+            {
                 this.roomData.code = value;
             }
         }
 
-        public string Description {
-            get {
+        public string Description
+        {
+            get
+            {
                 return this.roomData.description;
             }
-            set {
+            set
+            {
                 this.roomData.description = value;
             }
         }
 
         public string MeetingCenterCode
         {
-            get {
+            get
+            {
                 return this.roomData.meetingCenterCode;
             }
-            set {
+            set
+            {
                 this.roomData.meetingCenterCode = value;
             }
         }
 
-        public int Capacity {
-            get {
+        public int Capacity
+        {
+            get
+            {
                 return this.roomData.capacity;
             }
-            set {
+            set
+            {
                 this.roomData.capacity = value;
             }
         }
 
-        public bool VideoConference {
-            get {
+        public bool VideoConference
+        {
+            get
+            {
                 return this.roomData.videoConference;
             }
-            set {
+            set
+            {
                 this.roomData.videoConference = value;
             }
         }

@@ -5,9 +5,15 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:EX_01"
         mc:Ignorable="d"
-        Title="SEM06" Height="768" Width="1024" Closed="Window_Closed">
+        Title="UC Meeting Centers Manager" Height="768" Width="1024" Closed="Window_Closed">
+    
     <StackPanel>
-        <StackPanel Orientation="Horizontal" Width="1000" Margin="12 20 12 20">
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+            <Button Name="BtnUploadFile" Width="80" HorizontalAlignment="Right" Margin="0 0 10 0" Click="BtnUploadFile_Click">Upload File</Button>
+            <Button Name="BtnSaveFile" Width="80" Margin="0 0 10 0" Click="BtnSaveFile_Click">Save</Button>
+            <Button Name="BtnExportFile" Width="80" Margin="0 0 0 0" Click="BtnExportFile_Click">Save As</Button>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" Width="1000" Margin="12 50 12 20">
         <StackPanel HorizontalAlignment="Left" Margin="20 0 20 20" Width="450">
             <TextBlock FontSize="20" Margin="0 0 0 10">Meeting Centers</TextBlock>
             <StackPanel Orientation="Horizontal">

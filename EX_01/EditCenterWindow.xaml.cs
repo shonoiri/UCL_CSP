@@ -1,17 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-using System.Windows.Controls;
 
 namespace EX_01
 {
@@ -30,14 +18,16 @@ namespace EX_01
         private void BtnCancel_Click(object sender, RoutedEventArgs e)
         {
             (Centre.DataContext as MeetingCenter).CancelEdit();
-            Centre.DataContext = null;
             this.Close();
         }
 
         private void BtnSave_Click(object sender, RoutedEventArgs e)
         {
-            (Centre.DataContext as MeetingCenter).EndEdit();
+            var center = Centre.DataContext as MeetingCenter;
+            center.EndEdit();
+            center.Rooms.ForEach(r => r.MeetingCenterCode = center.Code);
             this.Close();
+
         }
     }
 }

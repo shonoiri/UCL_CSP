@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 
-
 namespace EX_01
 {
     public class MeetingCenter : IEditableObject
@@ -46,6 +45,12 @@ namespace EX_01
         public void CancelEdit()
         {
             this.centerData = backupData;
+        }
+
+        //Name, Code, Description, MeetingRooms 
+        public override string ToString()
+        {
+            return this.centerData.name + "," + this.centerData.code + "," + this.centerData.description + "\n";
         }
 
         public String Name
