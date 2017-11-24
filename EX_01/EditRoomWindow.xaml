@@ -10,17 +10,17 @@
         <StackPanel Name="CurrentRoom"  Orientation="Vertical" HorizontalAlignment="Left" Margin="20 20 20 20">
             <TextBlock FontSize="20" HorizontalAlignment="Center" Margin="0 0 0 10" >Meeting Room</TextBlock>
             <TextBlock>Name</TextBlock>
-            <TextBox Name="TBoxRoomName" Text="{Binding Name, Mode=OneWay}" Width="350" HorizontalAlignment="Left" >
+            <TextBox Name="TBoxRoomName" Text="{Binding Name, Mode=OneWay}" Width="350" HorizontalAlignment="Left" TextChanged="TBoxRoomName_TextChanged" >
             </TextBox>
             <TextBlock>Code</TextBlock>
-            <TextBox Name="TBoxRoomCode" Text="{Binding Code, Mode=OneWay}" Width="350" HorizontalAlignment="Left"></TextBox>
+            <TextBox Name="TBoxRoomCode" Text="{Binding Code, Mode=OneWay}" Width="350" HorizontalAlignment="Left" TextChanged="TBoxRoomCode_TextChanged"></TextBox>
             <TextBlock>Meeting Center Code</TextBlock>
-            <TextBox Name="TBoxRoomCentreCode" Text="{Binding MeetingCenterCode, Mode=OneWay}" Width="350" HorizontalAlignment="Left" IsReadOnly="True"></TextBox>
+            <TextBox Name="TBoxRoomCentreCode" Text="{Binding MeetingCenterCode, Mode=OneWay}" Width="350" HorizontalAlignment="Left" IsReadOnly="True" TextChanged="TBoxRoomCentreCode_TextChanged"></TextBox>
             <TextBlock>Capacity</TextBlock>
-            <TextBox Name="TBoxRoomCapacity" Text="{Binding Capacity, Mode=OneWay}" Width="350" HorizontalAlignment="Left"></TextBox>
+            <TextBox Name="TBoxRoomCapacity" Text="{Binding Capacity, Mode=OneWay}" Width="350" HorizontalAlignment="Left" TextChanged="TBoxRoomCapacity_TextChanged"></TextBox>
             <TextBlock>Description</TextBlock>
-            <TextBox Name="TBoxRoomDescription" Text="{Binding Description, Mode=OneWay}" Width="350" Height="50" HorizontalAlignment="Left"  TextWrapping="Wrap" AcceptsReturn="True"></TextBox>
-            <CheckBox Name="CBoxVideo" IsChecked="{Binding VideoConference, Mode=OneWay}"  HorizontalAlignment="Left">Video Conference</CheckBox>
+            <TextBox Name="TBoxRoomDescription" Text="{Binding Description, Mode=OneWay}" Width="350" Height="50" HorizontalAlignment="Left"  TextWrapping="Wrap" AcceptsReturn="True" TextChanged="TBoxRoomDescription_TextChanged"></TextBox>
+            <CheckBox Name="CBoxVideo" IsChecked="{Binding VideoConference, Mode=OneWay}"  HorizontalAlignment="Left" Checked="CBoxVideo_Checked">Video Conference</CheckBox>
         </StackPanel>
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0 0 20 20">
             <Button Name="BtnSave" Width="80" HorizontalAlignment="Right" Margin="0 20 10 0" Click="BtnSave_Click">Save</Button>

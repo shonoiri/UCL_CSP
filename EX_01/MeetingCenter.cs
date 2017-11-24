@@ -1,16 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 
 
 namespace EX_01
 {
-    public class MeetingCenter
+    public class MeetingCenter : IEditableObject, IDataErrorInfo
     {
-        public string Code { get; set; }
-        public string Name { get; set; }
-        public string Description { get; set; }
-        public List<MeetingRoom> Rooms { get; set; } = new List<MeetingRoom>();
-        
+        struct CenterData
+        {
+            internal string code;
+            internal string name;
+            internal string description;
+        }
+
+        private CenterData centerData;
+        private CenterData backupData;
+
+        private List<MeetingRoom> rooms { get; set; } = new List<MeetingRoom>();
+
         public MeetingCenter()
         {
 
@@ -18,10 +26,103 @@ namespace EX_01
 
         public MeetingCenter(string code, string name, string description, List<MeetingRoom> rooms)
         {
-            Code = code;
-            Name = name;
-            Description = description;
-            Rooms = rooms;
+            this.centerData = new CenterData();
+            this.centerData.code = code;
+            this.centerData.name = name;
+            this.centerData.description = description;
+            this.rooms = rooms;
+        }
+
+        public void BeginEdit()
+        {
+            this.backupData = centerData;
+        }
+
+        public void EndEdit()
+        {
+            this.backupData = new CenterData();
+        }
+
+        public void CancelEdit()
+        {
+            this.centerData = backupData;
+        }
+
+        public string Error
+        {
+            get
+            {
+                return null;
+            }
+        }
+
+        public string this[string columnName]
+        {
+            get
+            {
+                string msg = null;
+                switch (columnName)
+                {
+                    case "Name":
+                        if (string.IsNullOrEmpty(this.Name))
+                            msg = "Name can't be empty.";
+                        break;
+
+                    default:
+                        throw new ArgumentException(
+                        "Unrecognized property: " + columnName);
+                }
+                return msg;
+            }
+        }
+
+        public String Name
+        {
+            get
+            {
+                return this.centerData.name;
+            }
+            set
+            {
+                this.centerData.name = value;
+            }
+        }
+
+        public string Code
+        {
+            get
+            {
+                return this.centerData.code;
+            }
+            set
+            {
+                this.centerData.code = value;
+            }
+        }
+
+        public string Description
+        {
+            get
+            {
+                return this.centerData.description;
+            }
+            set
+            {
+                this.centerData.description = value;
+            }
+        }
+
+        public List<MeetingRoom> Rooms
+        {
+            get
+            {
+                return this.rooms;
+            }
+
+            set
+            {
+                this.rooms = value;
+            }
         }
     }
 }

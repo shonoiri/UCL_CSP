@@ -23,19 +23,21 @@ namespace EX_01
         public EditRoomWindow(MeetingRoom room)
         {
             InitializeComponent();
+            room.BeginEdit();
             CurrentRoom.DataContext = room;
         }
 
         private void BtnCancel_Click(object sender, RoutedEventArgs e)
         {
-            this.DialogResult = false;
+            (CurrentRoom.DataContext as MeetingRoom).CancelEdit();
             this.Close();
         }
 
         private void BtnSave_Click(object sender, RoutedEventArgs e)
         {
-            this.DialogResult = true;
+            (CurrentRoom.DataContext as MeetingRoom).EndEdit();
             this.Close();
         }
+
     }
 }

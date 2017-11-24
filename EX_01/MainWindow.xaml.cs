@@ -11,7 +11,7 @@ namespace EX_01
     /// </summary>
     public partial class MainWindow : Window
     {
-        private ObservableCollection<MeetingCenter> centres = new ObservableCollection<MeetingCenter>();
+        private static ObservableCollection<MeetingCenter> centres = new ObservableCollection<MeetingCenter>();
         private const string InputFileName = "ImportData.csv";
 
         public MainWindow()
@@ -68,18 +68,17 @@ namespace EX_01
 
         private void BtnCreateCenter_Click(object sender, RoutedEventArgs e)
         {
-            EditCenterWindow editWindow = new EditCenterWindow(null);
+            MeetingCenter center = new MeetingCenter();
+            EditCenterWindow editWindow = new EditCenterWindow(center);
             editWindow.ShowDialog();
             if (editWindow.DialogResult == true)
             {
-                MeetingCenter center = new MeetingCenter();
                 center.Name = editWindow.TBoxCenterName.Text;
                 center.Code = editWindow.TBoxCenterCode.Text;
                 center.Code = editWindow.TBoxCenterDescription.Text;
                 centres.Add(center);
                 DataGridCenters.Items.Refresh();
             }
-
         }
 
         private void BtnDeleteCenter_Click(object sender, RoutedEventArgs e)
@@ -91,8 +90,7 @@ namespace EX_01
                 DataGridRooms.DataContext = null;
                 CurrentCentre.DataContext = null;
             }
-            DataGridRooms.Items.Refresh();
-            DataGridCenters.Items.Refresh();
+            this.UpdateLayout();
         }
 
         private void BtnEditCenter_Click(object sender, RoutedEventArgs e)
@@ -101,17 +99,11 @@ namespace EX_01
             {
                 MeetingCenter center = CurrentCentre.DataContext as MeetingCenter;
                 EditCenterWindow editWindow = new EditCenterWindow(center);
-                editWindow.ShowDialog();
-                if (editWindow.DialogResult == true)
-                {
-                    center.Name = editWindow.TBoxCenterName.Text;
-                    center.Code = editWindow.TBoxCenterCode.Text;
-                    center.Description = editWindow.TBoxCenterDescription.Text;
-                    DataGridRooms.Items.Refresh();
-                    DataGridCenters.Items.Refresh();
-                    CurrentCentre.DataContext = center;
-                }
-
+                editWindow.Show();
+                CurrentCentre.DataContext = center;
+                DataGridRooms.Items.Refresh();
+                DataGridCenters.Items.Refresh();
+                CurrentCentre.DataContext = null;
             }
             else
             {
@@ -157,7 +149,7 @@ namespace EX_01
             }
         }
 
-        private MeetingCenter GetMeetingCenterByName(string Name)
+        private static MeetingCenter GetMeetingCenterByName(string Name)
         {
             return centres.Where(x => x.Code.Equals(Name)).First();
         }
@@ -204,6 +196,5 @@ namespace EX_01
                 parser.Close();
             }
         }
-
     }
 }
