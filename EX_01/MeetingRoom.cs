@@ -6,6 +6,9 @@ namespace EX_01
 {
     public class MeetingRoom : IEditableObject
     {
+        /*
+         * This class represents Meeting Room
+         */
         struct RoomData
         {
             internal string code;
@@ -16,7 +19,9 @@ namespace EX_01
             internal bool videoConference;
         }
 
+        //Current Meeting Room Data
         private RoomData roomData;
+        //The data for backup
         private RoomData backupData;
 
         public MeetingRoom(string code, string name, string description, string meetingCenterCode, int capacity, bool videoConference)
@@ -49,7 +54,6 @@ namespace EX_01
             this.roomData = backupData;
         }
 
-        //Name, Code, Description, Capacity, VideoConference
         public override string ToString()
         {
             string video = "";

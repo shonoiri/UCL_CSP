@@ -42,7 +42,7 @@
         <StackPanel Name="Centre" Orientation="Vertical" HorizontalAlignment="Left" Margin="20 20 20 20">
             <TextBlock HorizontalAlignment="Center" FontSize="20" Margin="0 0 0 10" >Meeting Centre</TextBlock>
             <TextBlock>Name</TextBlock>
-            <TextBox x:Name="TBoxCenterName" Width="350" HorizontalAlignment = "Left" Validation.ErrorTemplate="{StaticResource TextBoxErrorTemplate}">
+            <TextBox Width="350" HorizontalAlignment = "Left" Validation.ErrorTemplate="{StaticResource TextBoxErrorTemplate}">
                 <TextBox.Text>
                     <Binding Path="Name" UpdateSourceTrigger = "PropertyChanged">
                         <Binding.ValidationRules>
@@ -52,7 +52,7 @@
                 </TextBox.Text>
             </TextBox>
             <TextBlock>Code</TextBlock>
-            <TextBox Name="TBoxCenterCode" Width="350" HorizontalAlignment="Left" Validation.ErrorTemplate="{StaticResource TextBoxErrorTemplate}">
+            <TextBox Width="350" HorizontalAlignment="Left" Validation.ErrorTemplate="{StaticResource TextBoxErrorTemplate}">
                 <TextBox.Text>
                     <Binding Path="Code" UpdateSourceTrigger = "PropertyChanged">
                         <Binding.ValidationRules>
@@ -62,7 +62,7 @@
                 </TextBox.Text>
             </TextBox>
             <TextBlock>Description</TextBlock>
-            <TextBox Name="TBoxCenterDescription" Width="350" Height="50" HorizontalAlignment="Left" TextWrapping="Wrap" AcceptsReturn="True" Validation.ErrorTemplate="{StaticResource TextBoxErrorTemplate}">
+            <TextBox Width="350" Height="50" HorizontalAlignment="Left" TextWrapping="Wrap" AcceptsReturn="True" Validation.ErrorTemplate="{StaticResource TextBoxErrorTemplate}">
                 <TextBox.Text>
                     <Binding Path="Description" UpdateSourceTrigger="PropertyChanged">
                         <Binding.ValidationRules>

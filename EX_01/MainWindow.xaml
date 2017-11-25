@@ -53,11 +53,26 @@
             <StackPanel Name="CurrentCentre" Orientation="Vertical" HorizontalAlignment="Left" Margin="20 20 180 20">
                 <TextBlock HorizontalAlignment="Center" FontSize="20" Margin="0 0 0 10" >Meeting Centre Details</TextBlock>
                 <TextBlock>Name</TextBlock>
-                <TextBox Name="TBoxCenterName" Width="300" HorizontalAlignment="Left" Text="{Binding Name}" IsReadOnly="True"></TextBox>
+                <TextBox Name="TBoxCenterName" Width="300" HorizontalAlignment="Left" IsReadOnly="True">
+                    <TextBox.Text>
+                        <Binding Path="Name"/>
+                    </TextBox.Text>
+                </TextBox>
                 <TextBlock>Code</TextBlock>
-                <TextBox Name="TBoxCenterCode" Width="300" HorizontalAlignment="Left" Text="{Binding Code}" IsReadOnly="True"></TextBox>
+                <TextBox Name="TBoxCenterCode" Width="300" HorizontalAlignment="Left" IsReadOnly="True">
+                    <TextBox.Text>
+                        <Binding Path="Code"/>
+                    </TextBox.Text>
+                </TextBox>
                 <TextBlock>Description</TextBlock>
-                <TextBox Name="TBoxCenterDescription" Width="300" Height="50" HorizontalAlignment="Left" TextWrapping="Wrap" AcceptsReturn="True" Text="{Binding Description}" IsReadOnly="True"></TextBox>
+                <TextBox Name="TBoxCenterDescription" Width="300" Height="50" HorizontalAlignment="Left" 
+                         TextWrapping="Wrap" 
+                         AcceptsReturn="True" 
+                         IsReadOnly="True">
+                    <TextBox.Text>
+                        <Binding Path="Description"/>
+                    </TextBox.Text>
+                </TextBox>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0 0 0 20">
                 <Button x:Name="BtnEditCenter" Width="80" Margin="0 20 0 0" Click="BtnEditCenter_Click" Content="Edit" />
             </StackPanel>
@@ -66,16 +81,42 @@
             <StackPanel Name="CurrentRoom" Orientation="Vertical" HorizontalAlignment="Left" Margin="20 20 20 20" >
                 <TextBlock FontSize="20" HorizontalAlignment="Center" Margin="0 0 0 10" >Meeting Room Details</TextBlock>
                 <TextBlock>Name</TextBlock>
-                <TextBox Name="TBoxRoomName" Text="{Binding Name}" Width="300" HorizontalAlignment="Left" IsReadOnly="True"></TextBox>
+                <TextBox Name="TBoxRoomName" Width="300" HorizontalAlignment="Left" IsReadOnly="True">
+                    <TextBox.Text>
+                        <Binding Path="Name"/>
+                    </TextBox.Text>
+                </TextBox>
                 <TextBlock>Code</TextBlock>
-                <TextBox Name="TBoxRoomCode" Text="{Binding Code}" Width="300" HorizontalAlignment="Left" IsReadOnly="True"></TextBox>
+                <TextBox Name="TBoxRoomCode" Width="300" HorizontalAlignment="Left" IsReadOnly="True">
+                    <TextBox.Text>
+                        <Binding Path="Code"/>
+                    </TextBox.Text>
+                </TextBox>
                 <TextBlock>Meeting Center Code</TextBlock>
-                <TextBox Name="TBoxRoomCentreCode" Text="{Binding MeetingCenterCode}" Width="300" HorizontalAlignment="Left" IsReadOnly="True"></TextBox>
+                <TextBox Name="TBoxRoomCentreCode" Width="300" HorizontalAlignment="Left" IsReadOnly="True">
+                    <TextBox.Text>
+                        <Binding Path="MeetingCenterCode"/>
+                    </TextBox.Text>
+                </TextBox>
                 <TextBlock>Capacity</TextBlock>
-                <TextBox Name="TBoxRoomCapacity" Text="{Binding Capacity}" Width="300" HorizontalAlignment="Left" IsReadOnly="True"></TextBox>
+                <TextBox Name="TBoxRoomCapacity" Width="300" HorizontalAlignment="Left" IsReadOnly="True">
+                    <TextBox.Text>
+                        <Binding Path="Capacity"/>
+                    </TextBox.Text>
+                </TextBox>
                 <TextBlock>Description</TextBlock>
-                <TextBox Name="TBoxRoomDescription" Text="{Binding Description}" Width="300" Height="50" HorizontalAlignment="Left"  TextWrapping="Wrap" AcceptsReturn="True" IsReadOnly="True"></TextBox>
-                <CheckBox Name="CBoxVideo" Width="300" IsChecked="{Binding VideoConference}"  HorizontalAlignment="Right" IsEnabled="False">Video Conference</CheckBox>
+                <TextBox Name="TBoxRoomDescription" Width="300" Height="50" HorizontalAlignment="Left"  
+                         TextWrapping="Wrap" 
+                         AcceptsReturn="True" 
+                         IsReadOnly="True">
+                    <TextBox.Text>
+                        <Binding Path="Description"/>
+                    </TextBox.Text>
+                </TextBox>
+                <CheckBox Name="CBoxVideo" Width="300" HorizontalAlignment="Right"
+                          IsChecked="{Binding VideoConference}"
+                          IsEnabled="False"
+                          >Video Conference</CheckBox>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0 0 0 20">
                     <Button Name="BtnEditRoom" Width="80" Margin="0 20 0 0" Click="BtnEditRoom_Click">Edit</Button>
                 </StackPanel>

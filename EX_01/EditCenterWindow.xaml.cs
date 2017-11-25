@@ -1,10 +1,9 @@
-﻿
-using System.Windows;
+﻿using System.Windows;
 
 namespace EX_01
 {
     /// <summary>
-    /// Логика взаимодействия для EditCenterWindow.xaml
+    /// Interaction logic for EditCenterWindow.xaml
     /// </summary>
     public partial class EditCenterWindow : Window
     {

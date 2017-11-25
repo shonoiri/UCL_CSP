@@ -4,6 +4,9 @@ using System.ComponentModel;
 
 namespace EX_01
 {
+    /*
+     This class represents Meeting Center
+     */
     public class MeetingCenter : IEditableObject
     {
         struct CenterData
@@ -13,15 +16,14 @@ namespace EX_01
             internal string description;
         }
 
+        //Current Meeting Center Data
         private CenterData centerData;
+        //The data for backup
         private CenterData backupData;
 
         private List<MeetingRoom> rooms { get; set; } = new List<MeetingRoom>();
 
-        public MeetingCenter()
-        {
-
-        }
+        public MeetingCenter() { }
 
         public MeetingCenter(string code, string name, string description, List<MeetingRoom> rooms)
         {
@@ -47,7 +49,6 @@ namespace EX_01
             this.centerData = backupData;
         }
 
-        //Name, Code, Description, MeetingRooms 
         public override string ToString()
         {
             return this.centerData.name + "," + this.centerData.code + "," + this.centerData.description + "\n";

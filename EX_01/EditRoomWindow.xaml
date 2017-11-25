@@ -41,7 +41,7 @@
         <StackPanel Name="CurrentRoom"  Orientation="Vertical" HorizontalAlignment="Left" Margin="20 20 20 20">
             <TextBlock FontSize="20" HorizontalAlignment="Center" Margin="0 0 0 10" >Meeting Room</TextBlock>
             <TextBlock>Name</TextBlock>
-            <TextBox x:Name="TBoxRoomName" Width="350" HorizontalAlignment="Left" Validation.ErrorTemplate="{StaticResource TextBoxErrorTemplate}">
+            <TextBox Width="350" HorizontalAlignment="Left" Validation.ErrorTemplate="{StaticResource TextBoxErrorTemplate}">
                 <TextBox.Text>
                     <Binding Path="Name" UpdateSourceTrigger="PropertyChanged">
                         <Binding.ValidationRules>
@@ -51,7 +51,7 @@
                 </TextBox.Text>
             </TextBox>
             <TextBlock>Code</TextBlock>
-            <TextBox Name="TBoxRoomCode" Width="350" HorizontalAlignment="Left" Validation.ErrorTemplate="{StaticResource TextBoxErrorTemplate}">
+            <TextBox Width="350" HorizontalAlignment="Left" Validation.ErrorTemplate="{StaticResource TextBoxErrorTemplate}">
                 <TextBox.Text>
                     <Binding Path="Code" UpdateSourceTrigger="PropertyChanged">
                         <Binding.ValidationRules>
@@ -61,13 +61,13 @@
                 </TextBox.Text>
             </TextBox>
             <TextBlock>Meeting Center Code</TextBlock>
-            <TextBox Name="TBoxRoomCentreCode" Width="350" HorizontalAlignment="Left" IsReadOnly="True">
+            <TextBox Width="350" HorizontalAlignment="Left" IsReadOnly="True">
                 <TextBox.Text>
-                    <Binding Path="MeetingCentreCode"></Binding>
+                    <Binding Path="MeetingCenterCode"></Binding>
                 </TextBox.Text>
             </TextBox>
             <TextBlock>Capacity</TextBlock>
-            <TextBox Name="TBoxRoomCapacity" Width="350" HorizontalAlignment="Left" Validation.ErrorTemplate="{StaticResource TextBoxErrorTemplate}">
+            <TextBox Width="350" HorizontalAlignment="Left" Validation.ErrorTemplate="{StaticResource TextBoxErrorTemplate}">
                 <TextBox.Text>
                     <Binding Path="Capacity" UpdateSourceTrigger="PropertyChanged">
                         <Binding.ValidationRules>
@@ -77,7 +77,7 @@
                 </TextBox.Text>
             </TextBox>
             <TextBlock>Description</TextBlock>
-            <TextBox Name="TBoxRoomDescription" Width="350" Height="50" HorizontalAlignment="Left"  
+            <TextBox Width="350" Height="50" HorizontalAlignment="Left"  
                      TextWrapping="Wrap" 
                      AcceptsReturn="True" 
                      Validation.ErrorTemplate="{StaticResource TextBoxErrorTemplate}">
@@ -89,7 +89,7 @@
                     </Binding>
                 </TextBox.Text>
             </TextBox>
-            <CheckBox Name="CBoxVideo" IsChecked="{Binding VideoConference}"  HorizontalAlignment="Left">Video Conference</CheckBox>
+            <CheckBox IsChecked="{Binding VideoConference}"  HorizontalAlignment="Left">Video Conference</CheckBox>
         </StackPanel>
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0 0 20 20">
             <Button Name="BtnSave" Width="80" HorizontalAlignment="Right" Margin="0 20 10 0" Click="BtnSave_Click">Save</Button>

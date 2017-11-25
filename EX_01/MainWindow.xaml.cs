@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.ObjectModel;
-using System.Linq;
 using System.Windows;
-using Microsoft.VisualBasic.FileIO;
 using Microsoft.Win32;
-using System.IO;
+
 
 namespace EX_01
 {
@@ -13,19 +11,21 @@ namespace EX_01
     /// </summary>
     public partial class MainWindow : Window
     {
-        private static ObservableCollection<MeetingCenter> centres = new ObservableCollection<MeetingCenter>();
+        private static ObservableCollection<MeetingCenter> centres;
         private string FileName = "";
 
         public MainWindow()
         {
             InitializeComponent();
+            centres = new ObservableCollection<MeetingCenter>();
+            DataGridCenters.DataContext = centres;
         }
 
         private void DataGridCenters_CurrentCellChanged(object sender, EventArgs e)
         {
             if (DataGridCenters.CurrentItem != null)
             {
-                MeetingCenter center = DataGridCenters.CurrentItem as MeetingCenter;
+                var center = DataGridCenters.CurrentItem as MeetingCenter;
                 CurrentCentre.DataContext = center;
                 DataGridRooms.DataContext = center.Rooms;
                 CurrentRoom.DataContext = null;
@@ -44,10 +44,11 @@ namespace EX_01
         {
             if (CurrentCentre.DataContext != null)
             {
-                MeetingRoom room = new MeetingRoom();
+                var room = new MeetingRoom();
                 room.MeetingCenterCode = (CurrentCentre.DataContext as MeetingCenter).Code;
-                EditRoomWindow editWindow = new EditRoomWindow(room);
+                var editWindow = new EditRoomWindow(room);
                 editWindow.ShowDialog();
+                (CurrentCentre.DataContext as MeetingCenter).Rooms.Add(room);
                 DataGridRooms.Items.Refresh();
             }
             else
@@ -61,26 +62,21 @@ namespace EX_01
             var center = new MeetingCenter();
             var editWindow = new EditCenterWindow(center);
             editWindow.ShowDialog();
-            if (editWindow.DialogResult == true)
-            {
-                center.Name = editWindow.TBoxCenterName.Text;
-                center.Code = editWindow.TBoxCenterCode.Text;
-                center.Code = editWindow.TBoxCenterDescription.Text;
-                centres.Add(center);
-                DataGridCenters.Items.Refresh();
-            }
+            centres.Add(center);
+            DataGridCenters.Items.Refresh();
+            DataGridRooms.Items.Refresh();
         }
 
         private void BtnDeleteCenter_Click(object sender, RoutedEventArgs e)
         {
             if (DataGridCenters.SelectedItem != null)
             {
-                MeetingCenter center = DataGridCenters.SelectedItem as MeetingCenter;
+                var center = DataGridCenters.SelectedItem as MeetingCenter;
                 centres.Remove(center);
                 DataGridRooms.DataContext = null;
                 CurrentCentre.DataContext = null;
             }
-            this.UpdateLayout();
+            DataGridCenters.Items.Refresh();
         }
 
         private void BtnEditCenter_Click(object sender, RoutedEventArgs e)
@@ -104,7 +100,7 @@ namespace EX_01
         {
             if (DataGridRooms.SelectedItem != null)
             {
-                MeetingRoom room = DataGridRooms.SelectedItem as MeetingRoom;
+                var room = DataGridRooms.SelectedItem as MeetingRoom;
                 GetMeetingCenterByCode(room.MeetingCenterCode).Rooms.Remove(room);
                 CurrentRoom.DataContext = null;
             }
@@ -115,8 +111,8 @@ namespace EX_01
         {
             if (CurrentRoom.DataContext != null)
             {
-                MeetingRoom room = CurrentRoom.DataContext as MeetingRoom;
-                EditRoomWindow editWindow = new EditRoomWindow(room);
+                var room = CurrentRoom.DataContext as MeetingRoom;
+                var editWindow = new EditRoomWindow(room);
                 editWindow.ShowDialog();
                 CurrentRoom.DataContext = null;
                 DataGridRooms.Items.Refresh();
@@ -132,7 +128,7 @@ namespace EX_01
 
         public static MeetingCenter GetMeetingCenterByCode(string Name)
         {
-            foreach (MeetingCenter center in centres)
+            foreach (var center in centres)
             {
                 if (center.Code.Equals(Name))
                     return center;
@@ -142,9 +138,9 @@ namespace EX_01
 
         public static MeetingRoom GetMeetingRoomByCode(string Code)
         {
-            foreach (MeetingCenter center in centres)
+            foreach (var center in centres)
             {
-                foreach (MeetingRoom room in center.Rooms)
+                foreach (var room in center.Rooms)
                     if (room.Code.Equals(Code))
                         return room;
             }
@@ -153,81 +149,79 @@ namespace EX_01
 
         private void Window_Closed(object sender, EventArgs e)
         {
-            //save data - save data warning ?
-        }
-
-        private void LoadData(string InputFileName)
-        {
-            using (TextFieldParser parser = new TextFieldParser(InputFileName))
+            if (centres.Count != 0)
             {
-                centres = new ObservableCollection<MeetingCenter>();
-                parser.TextFieldType = FieldType.Delimited;
-                parser.SetDelimiters(",");
-                string[] fields = parser.ReadFields();
+                MessageBoxResult result = MessageBox.Show("Save changes ?", "Exit", MessageBoxButton.YesNo);
+                if (result == MessageBoxResult.Yes)
+                    if (string.IsNullOrEmpty(FileName))
+                    {
+                        var dlg = new SaveFileDialog();
+                        dlg.FileName = "ManagerData";
+                        dlg.DefaultExt = ".csv";
+                        dlg.Filter = "CSV documents (.csv)|*.csv";
 
-                //MEETING_CENTRES
-                fields = parser.ReadFields();
-                while (!fields[0].Equals("MEETING_ROOMS", StringComparison.InvariantCultureIgnoreCase))
-                {
-                    MeetingCenter center = new MeetingCenter();
-                    center.Name = fields[0];
-                    center.Code = fields[1];
-                    center.Description = fields[2];
-                    centres.Add(center);
-                    fields = parser.ReadFields();
-                }
+                        Nullable<bool> resultDlg = dlg.ShowDialog();
 
-                //MEETING_ROOMS
-                while (!parser.EndOfData)
-                {
-                    fields = parser.ReadFields();
-                    MeetingRoom room = new MeetingRoom();
-                    room.Name = fields[0];
-                    room.Code = fields[1];
-                    room.Description = fields[2];
-                    room.Capacity = Int32.Parse(fields[3]);
-                    room.VideoConference = fields[4].Equals("yes", StringComparison.InvariantCultureIgnoreCase);
-                    room.MeetingCenterCode = fields[5];
-                    GetMeetingCenterByCode(fields[5]).Rooms.Add(room);
-                }
-
-                parser.Close();
-                DataGridCenters.DataContext = centres;
-            }
-        }
-
-        private void SaveData(string fileName)
-        {
-            using (StreamWriter outputFile = new StreamWriter(fileName, false))
-            {
-                outputFile.WriteLine("MEETING_CENTRES\n");
-                foreach (MeetingCenter center in centres)
-                    outputFile.WriteLine(center.ToString());
-                outputFile.WriteLine("MEETING_ROOMS\n");
-                foreach (MeetingCenter center in centres)
-                    foreach (MeetingRoom room in center.Rooms)
-                        outputFile.WriteLine(room.ToString());
-                outputFile.Close();
+                        if (resultDlg == true)
+                            try
+                            {
+                                DataLoader.SaveData(dlg.FileName, centres);
+                            }
+                            catch (Exception exc)
+                            {
+                                MessageBox.Show("Cannot save the data.\n " + exc.Message, "Error", MessageBoxButton.OK);
+                                this.Activate();
+                            }
+                    }
+                    else
+                        try
+                        {
+                            DataLoader.SaveData(this.FileName, centres);
+                        }
+                        catch (Exception exc)
+                        {
+                            MessageBox.Show("Cannot save the data.\n " + exc.Message, "Error", MessageBoxButton.OK);
+                        }
             }
         }
 
         private void BtnUploadFile_Click(object sender, RoutedEventArgs e)
         {
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.Filter = "Text documents (.csv)|*.csv";
+            var openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "CSV documents (.csv)|*.csv";
             if (openFileDialog.ShowDialog() == true)
-                LoadData(openFileDialog.FileName);
-            this.FileName = openFileDialog.FileName;
+                try
+                {
+                    DataLoader.LoadData(openFileDialog.FileName, centres);
+                    this.FileName = openFileDialog.FileName;
+                    DataGridCenters.Items.Refresh();
+                }
+                catch (Exception exc)
+                {
+                    if (exc is NullReferenceException)
+                        MessageBox.Show("Cannot load data from file.\n Check the correctness of file", "Error", MessageBoxButton.OK);
+                    else
+                        MessageBox.Show("Cannot load data from file.\n" + exc.Message, "Error", MessageBoxButton.OK);
+                }
+            else
+                MessageBox.Show("Cannot open file.\n", "Error", MessageBoxButton.OK);
         }
 
         private void BtnSaveFile_Click(object sender, RoutedEventArgs e)
         {
-            SaveData(this.FileName);
+            try
+            {
+                DataLoader.SaveData(this.FileName, centres);
+            }
+            catch (Exception exc)
+            {
+                MessageBox.Show("Cannot save the data.\n " + exc.Message, "Error", MessageBoxButton.OK);
+            }
         }
 
         private void BtnExportFile_Click(object sender, RoutedEventArgs e)
         {
-            SaveFileDialog dlg = new SaveFileDialog();
+            var dlg = new SaveFileDialog();
             dlg.FileName = "ManagerData";
             dlg.DefaultExt = ".csv";
             dlg.Filter = "CSV documents (.csv)|*.csv";
@@ -235,9 +229,14 @@ namespace EX_01
             Nullable<bool> result = dlg.ShowDialog();
 
             if (result == true)
-            {
-                SaveData(dlg.FileName);
-            }
+                try
+                {
+                    DataLoader.SaveData(dlg.FileName, centres);
+                }
+                catch (Exception exc)
+                {
+                    MessageBox.Show("Cannot save the data.\n " + exc.Message, "Error", MessageBoxButton.OK);
+                }
 
         }
     }
