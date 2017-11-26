@@ -53,7 +53,7 @@ namespace EX_01
           (object value, System.Globalization.CultureInfo cultureInfo)
         {
             string strValue = Convert.ToString(value);
-            string codePattern = "[a-z\\._:]+";
+            string codePattern = "[A-Za-z0-9\\._:-]+";
             string msg = null;
             if (string.IsNullOrEmpty(strValue))
                 return new ValidationResult(false, $"Value cannot be empty.");
